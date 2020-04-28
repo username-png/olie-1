@@ -48,40 +48,57 @@ def search_class_variants(container, class_names):
             return elements[0]
 
 
-next_page = next(generate_pages(search_url))
-logger.info(f'Starting with {next_page}')
-products = fetch_products(next_page)
+for page in generate_pages(search_url):
+    logger.info(f'Processing page {page}')
+    products = fetch_products(page)
 
-for product in products:
-    title = search_class_variants(product, product_title_class).text
-    price = search_class_variants(product, product_price_class).text
+    for product in products:
+        title = search_class_variants(product, product_title_class).text
+        price = search_class_variants(product, product_price_class).text
+        try:
+            questions = product.find_all(attrs={'class': questions_class})
+        except Exception as exc:
+            logging.warning(f'No questions container found for {title}')
+            continue
+
+        parsed_questions = []
+        for question in questions:
+            question_container = question.find_all(attrs={'class': question_class})[0]
+            question_content = question_container.find_all(attrs={'class': qa_content_class})[0].text
+            try:
+                answer_container = question.find_all(attrs={'class': answer_class})[0]
+                answer_content = answer_container.find_all(attrs={'class': qa_content_class})[0].text
+            except:
+                logging.warning(f'Found no answer for question {question_content}')
+                answer_content = ''
+            parsed_questions.append((question_content, answer_content))
+
+        try:
+            with open('questions.json', 'r') as questions_f:
+                stored_questions = json.load(questions_f)
+        except FileNotFoundError:
+            stored_questions = []
+
+        for (question, answer) in parsed_questions:
+            stored_questions.append({
+                'product': title,
+                'price': price,
+                'question': question,
+                'answer': answer,
+            })
+
+        with open('questions.json', 'w') as questions_f:
+            json.dump(stored_questions, questions_f)
+
+        logging.info(f'Stored {len(parsed_questions)} questions for {title}')
+
     try:
-        questions = product.find_all(attrs={'class': questions_class})
-    except Exception as exc:
-        logging.warning(f'No questions found for {title}')
-        continue
-
-    parsed_questions = []
-    for question in questions:
-        question_container = question.find_all(attrs={'class': question_class})[0]
-        question_content = question_container.find_all(attrs={'class': qa_content_class})[0].text
-        answer_container = question.find_all(attrs={'class': answer_class})[0]
-        answer_content = answer_container.find_all(attrs={'class': qa_content_class})[0].text
-        parsed_questions.append((question_content, answer_content))
-
-    try:
-        with open('questions.json', 'r') as questions_f:
-            stored_questions = json.load(question_f)
+        with open('pages.json', 'r') as pages_f:
+            stored_pages = json.load(pages_f)
     except FileNotFoundError:
-        stored_questions = []
+        stored_pages = []
 
-    for (question, answer) in parsed_questions:
-        stored_questions.append({
-            'product': title,
-            'price': price,
-            'question': question,
-            'answer': answer,
-        })
+    stored_pages.append(page)
 
-    with open('questions.json', 'w') as questions_f:
-        json.dump(stored_questions, questions_f)
+    with open('pages.json', 'w') as pages_f:
+        json.dump(stored_pages, pages_f)
