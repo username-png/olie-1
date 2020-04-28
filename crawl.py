@@ -39,7 +39,6 @@ def fetch_products(search_url):
     for product in parsed_response.find_all('a', {'class': 'item__info-title'}):
         product_href = product['href']
         logger.info(f'Fetching {product_href}')
-        product['href'] = 'https://produto.mercadolivre.com.br/MLB-1389262016-iphone-xs-64gb-garantia-apple-open-box-_JM?searchVariation=51891853732&quantity=1&variation=51891853732#searchVariation=51891853732&position=2&type=item&tracking_id=c5a7b5fc-b681-48b0-b779-a2d865cd9af7'
         yield BS(requests.get(product['href']).text, features='lxml')
 
 
