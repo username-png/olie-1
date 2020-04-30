@@ -1,0 +1,20 @@
+from dataclasses import dataclass
+
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+
+
+@dataclass
+class ModelAttributes:
+    vocab_size: int = 5000
+    embedding_dim: int = 64
+    max_length: int = 200
+    trunc_type: str = 'post'
+    padding_type: str = 'post'
+    oov_tok: str = '<OOV>'
+    training_portion: float = .8
+
+
+def predict(model, model_attributes, tokenizer, texts):
+    seq = tokenizer.texts_to_sequences(texts)
+    padded = pad_sequences(seq, maxlen=model_attributes.max_length)
+    return model.predict(padded)
