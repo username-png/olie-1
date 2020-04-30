@@ -1,29 +1,31 @@
 import csv
+import re
 
 import unidecode
+import pandas as pd
 from nltk.corpus import stopwords
 
+REPLACE_BY_SPACE_RE = re.compile('[/(){}\[\]\|@,;]')
+BAD_SYMBOLS_RE = re.compile('[^0-9a-z #+_]')
+STOPWORDS = set(stopwords.words('portuguese'))
 
 model_labels = set(['cor', 'pagamento', 'contato', 'frete'])
-model_labels = set(['cor', 'frete'])
-portuguese_stopwords = set(stopwords.words('portuguese'))
+
+def clean(text):
+    text = unidecode.unidecode(text)
+    text = text.lower()
+    text = REPLACE_BY_SPACE_RE.sub(' ', text)
+    text = BAD_SYMBOLS_RE.sub('', text)
+    text = [
+        token
+        for token in text.split(' ')
+        if token and token not in STOPWORDS
+    ]
+    return text
 
 
 def generate_dataset(dataset_path):
-    with open(dataset_path, 'r') as dataset_f:
-        reader = csv.reader(dataset_f, delimiter=',')
-        next(reader)
-
-        for row in reader:
-            _, _, _, question, _, label, _ = row
-            if not label or label not in model_labels:
-                continue
-
-            for word in portuguese_stopwords:
-                token = ' ' + word + ' '
-                question = question.replace(token, ' ')
-                question = question.replace(' ', ' ')
-
-            question = unidecode.unidecode(question)
-
-            yield question, label
+    df = pd.read_csv(dataset_path)
+    df.drop(df[~df['Class'].isin(model_labels)].index, inplace=True)
+    df['Question'] = df['Question'].apply(clean)
+    return df

@@ -1,15 +1,16 @@
 import logging
 from pathlib import Path
 
+import pandas as pd
 import tensorflow as tf
 import numpy as np
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
+from sklearn.model_selection import train_test_split
 
 from data import generate_dataset
 from tooling import (
     model_attributes,
-    predict,
 )
 
 logging.basicConfig(level=logging.INFO)
@@ -17,75 +18,63 @@ logger = logging.getLogger(__name__)
 
 model_path = Path(__file__).resolve().parent
 dataset = generate_dataset(model_path / 'data' / 'dataset.csv')
-questions, labels = zip(*dataset)
-
-train_size = int(len(questions) * model_attributes.training_portion)
-train_questions = questions[0: train_size]
-train_labels = labels[0: train_size]
-
-validation_questions = questions[train_size:]
-validation_labels = labels[train_size:]
-
-logger.info(f'Train dataset {len(train_questions)}')
-logger.info(f'Validation dataset {len(validation_questions)}')
+dataset = dataset.sort_values(by=['Class'])
 
 tokenizer = Tokenizer(
     num_words=model_attributes.vocab_size,
-    oov_token=model_attributes.oov_tok,
+    filters='!"#$%&()*+,-./:;<=>?@[\]^_`{|}~',
+    lower=True,
 )
-tokenizer.fit_on_texts(train_questions)
+tokenizer.fit_on_texts(dataset['Question'].values)
+labels = dataset['Class'].unique()
 
-train_sequences = tokenizer.texts_to_sequences(train_questions)
-validation_sequences = tokenizer.texts_to_sequences(validation_questions)
+X = tokenizer.texts_to_sequences(dataset['Question'].values)
+X = pad_sequences(X, maxlen=model_attributes.max_length)
+Y = pd.get_dummies(dataset['Class']).values
 
-train_padded = pad_sequences(
-    train_sequences,
-    maxlen=model_attributes.max_length,
-    padding=model_attributes.padding_type,
-    truncating=model_attributes.trunc_type,
-)
-validation_padded = pad_sequences(
-    validation_sequences,
-    maxlen=model_attributes.max_length,
-    padding=model_attributes.padding_type,
-    truncating=model_attributes.trunc_type,
+X_train, X_test, Y_train, Y_test = train_test_split(
+    X,
+    Y,
+    test_size=0.10,
+    random_state=42,
 )
 
-label_tokenizer = Tokenizer()
-label_tokenizer.fit_on_texts(labels)
-
-training_label_seq = np.array(label_tokenizer.texts_to_sequences(train_labels))
-validation_label_seq = np.array(label_tokenizer.texts_to_sequences(validation_labels))
-
-model = tf.keras.Sequential([
-    # Add an Embedding layer expecting input vocab of size 5000, and output embedding dimension of size 64 we set at the top
-    tf.keras.layers.Embedding(model_attributes.vocab_size, model_attributes.embedding_dim),
-    tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(model_attributes.embedding_dim)),
-    # tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(32)),
-    # use ReLU in place of tanh function since they are very good alternatives of each other.
-    tf.keras.layers.Dense(model_attributes.embedding_dim, activation='relu'),
-    # Add a Dense layer with 6 units and softmax activation.
-    # When we have multiple outputs, softmax convert outputs layers into a probability distribution.
-    tf.keras.layers.Dense(2, activation='softmax')
+model = tf.keras.models.Sequential([
+    tf.keras.layers.Embedding(
+        model_attributes.vocab_size,
+        model_attributes.embedding_dim,
+        input_length=X.shape[1]
+    ),
+    tf.keras.layers.SpatialDropout1D(0.2),
+    tf.keras.layers.LSTM(100, dropout=0.2, recurrent_dropout=0.2),
+    tf.keras.layers.Dense(len(labels), activation='softmax'),
 ])
-model.summary()
-
 model.compile(
-    loss='sparse_categorical_crossentropy',
+    loss='categorical_crossentropy',
     optimizer='adam',
     metrics=['accuracy'],
 )
 
-# 5 is just fine sounds like
-epochs = 5
+epochs = 6
+batch_size = 64
 
 history = model.fit(
-    train_padded,
-    training_label_seq,
+    X_train,
+    Y_train,
     epochs=epochs,
-    validation_data=(
-        validation_padded,
-        validation_label_seq
-    ),
-    verbose=2,
+    batch_size=batch_size,
+    validation_split=0.1,
+    callbacks=[
+        tf.keras.callbacks.EarlyStopping(
+            monitor='val_loss',
+            patience=3,
+            min_delta=0.0001,
+        )
+    ]
 )
+
+
+def predict(text):
+    seq = tokenizer.texts_to_sequences([text])
+    padded = pad_sequences(seq, maxlen=model_attributes.max_length)
+    return labels[np.argmax(model.predict(padded))]
