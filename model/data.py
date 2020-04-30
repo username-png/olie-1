@@ -1,9 +1,11 @@
 import csv
 
+import unidecode
 from nltk.corpus import stopwords
 
 
 model_labels = set(['cor', 'pagamento', 'contato', 'frete'])
+model_labels = set(['cor', 'frete'])
 portuguese_stopwords = set(stopwords.words('portuguese'))
 
 
@@ -21,5 +23,7 @@ def generate_dataset(dataset_path):
                 token = ' ' + word + ' '
                 question = question.replace(token, ' ')
                 question = question.replace(' ', ' ')
+
+            question = unidecode.unidecode(question)
 
             yield question, label

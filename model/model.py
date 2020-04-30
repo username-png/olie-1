@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 
 import tensorflow as tf
@@ -7,11 +8,12 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 from data import generate_dataset
 from tooling import (
-    ModelAttributes,
+    model_attributes,
     predict,
 )
 
-model_attributes = ModelAttributes()
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 model_path = Path(__file__).resolve().parent
 dataset = generate_dataset(model_path / 'data' / 'dataset.csv')
@@ -24,10 +26,14 @@ train_labels = labels[0: train_size]
 validation_questions = questions[train_size:]
 validation_labels = labels[train_size:]
 
+logger.info(f'Train dataset {len(train_questions)}')
+logger.info(f'Validation dataset {len(validation_questions)}')
+
 tokenizer = Tokenizer(
-    num_words=model_attributes.vocab_size, oov_token=model_attributes.oov_tok)
+    num_words=model_attributes.vocab_size,
+    oov_token=model_attributes.oov_tok,
+)
 tokenizer.fit_on_texts(train_questions)
-word_index = tokenizer.word_index
 
 train_sequences = tokenizer.texts_to_sequences(train_questions)
 validation_sequences = tokenizer.texts_to_sequences(validation_questions)
@@ -60,18 +66,26 @@ model = tf.keras.Sequential([
     tf.keras.layers.Dense(model_attributes.embedding_dim, activation='relu'),
     # Add a Dense layer with 6 units and softmax activation.
     # When we have multiple outputs, softmax convert outputs layers into a probability distribution.
-    tf.keras.layers.Dense(6, activation='softmax')
+    tf.keras.layers.Dense(2, activation='softmax')
 ])
 model.summary()
 
-model.compile(loss='sparse_categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.compile(
+    loss='sparse_categorical_crossentropy',
+    optimizer='adam',
+    metrics=['accuracy'],
+)
 
 # 5 is just fine sounds like
-num_epochs = 5
-history = model.fit(train_padded, training_label_seq, epochs=num_epochs, validation_data=(validation_padded, validation_label_seq), verbose=2)
+epochs = 5
 
-"""
-from visualization import plot_graphs
-plot_graphs(history, 'accuracy')
-plot_graphs(history, 'loss')
-"""
+history = model.fit(
+    train_padded,
+    training_label_seq,
+    epochs=epochs,
+    validation_data=(
+        validation_padded,
+        validation_label_seq
+    ),
+    verbose=2,
+)

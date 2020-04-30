@@ -14,7 +14,10 @@ class ModelAttributes:
     training_portion: float = .8
 
 
-def predict(model, model_attributes, tokenizer, texts):
+model_attributes = ModelAttributes()
+
+
+def predict(model, tokenizer, texts):
     seq = tokenizer.texts_to_sequences(texts)
     padded = pad_sequences(seq, maxlen=model_attributes.max_length)
     return model.predict(padded)
