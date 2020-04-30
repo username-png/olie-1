@@ -55,7 +55,7 @@ model.compile(
     metrics=['accuracy'],
 )
 
-epochs = 6
+epochs = 10
 batch_size = 64
 
 history = model.fit(
@@ -77,4 +77,13 @@ history = model.fit(
 def predict(text):
     seq = tokenizer.texts_to_sequences([text])
     padded = pad_sequences(seq, maxlen=model_attributes.max_length)
-    return labels[np.argmax(model.predict(padded))]
+    pred = model.predict(padded)
+    label_indexes = [
+        i for i, accuracy in enumerate(pred[0])
+        if accuracy > 0.2
+    ]
+    return (
+        [labels[i] for i in label_indexes],
+        labels,
+        [pred[0][i] for i in label_indexes],
+    )

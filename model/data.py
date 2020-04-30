@@ -9,7 +9,14 @@ REPLACE_BY_SPACE_RE = re.compile('[/(){}\[\]\|@,;]')
 BAD_SYMBOLS_RE = re.compile('[^0-9a-z #+_]')
 STOPWORDS = set(stopwords.words('portuguese'))
 
-model_labels = set(['cor', 'pagamento', 'contato', 'frete'])
+model_labels = set([
+    'cor',
+    'pagamento',
+    'contato',
+    'frete',
+    'entrega',
+    'condicao',
+])
 
 def clean(text):
     text = unidecode.unidecode(text)
