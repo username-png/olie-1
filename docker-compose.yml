@@ -4,13 +4,13 @@ services:
 
   web:
     init: true
-    container_name: template-web
+    container_name: olie-web
     build:
       context: .
     command: django
     environment:
       - CONTAINER_ENVIRONMENT=local
-      - DATABASE_URL=postgres://template:template@db:5432/template
+      - DATABASE_URL=postgres://olie:olie@db:5432/olie
       - REDIS_URL=redis://redis:6379/1
       - RABBITMQ_URL=amqp://guest:guest@rabbit:5672
     depends_on:
@@ -24,35 +24,35 @@ services:
       - "8000:8000"
 
   db:
-    container_name: template-db
+    container_name: olie-db
     image: mdillon/postgis:11-alpine
     volumes:
       - pgdata:/var/lib/postgresql/data 
     environment:
-      - POSTGRES_USER=template
-      - POSTGRES_PASSWORD=template
-      - POSTGRES_DB=template
+      - POSTGRES_USER=olie
+      - POSTGRES_PASSWORD=olie
+      - POSTGRES_DB=olie
 
   redis:
-    container_name: template-redis
+    container_name: olie-redis
     image: redis:5.0.6-alpine3.10
 
   rabbit:
-    container_name: template-rabbitmq
+    container_name: olie-rabbitmq
     image: rabbitmq:3.8.2-alpine
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
 
   dramatiq:
-    container_name: template-dramatiq
+    container_name: olie-dramatiq
     init: true
     build:
       context: .
     command: dramatiq
     environment:
       - CONTAINER_ENVIRONMENT=local
-      - DATABASE_URL=postgres://template:template@db:5432/template
+      - DATABASE_URL=postgres://olie:olie@db:5432/olie
       - REDIS_URL=redis://redis:6379/1
       - RABBITMQ_URL=amqp://guest:guest@rabbit:5672
     depends_on:
