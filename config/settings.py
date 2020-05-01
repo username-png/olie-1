@@ -34,6 +34,7 @@ DJANGO_APPS = [
 INTERNAL_APPS = [
     'app.misc',
     'app.users',
+    'app.questions',
 ]
 
 EXTERNAL_APPS = [
