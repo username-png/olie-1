@@ -4,8 +4,8 @@ from django.db import models
 class Question(models.Model):
 
     text = models.TextField()
-    label = models.ForeignKey(
-        'Label', blank=True, null=True, on_delete=models.SET_NULL)
+    tag = models.ForeignKey(
+        'Tag', blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f'{self.text}'
@@ -14,17 +14,17 @@ class Question(models.Model):
 class Answer(models.Model):
 
     text = models.TextField()
-    label = models.ForeignKey(
-        'Label', blank=True, null=True, on_delete=models.SET_NULL)
+    tag = models.ForeignKey(
+        'Tag', blank=True, null=True, on_delete=models.SET_NULL)
     is_suggestion = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.text}'
 
 
-class Label(models.Model):
+class Tag(models.Model):
 
-    identifier = models.CharField(max_length=64, unique=True)
+    slug = models.CharField(max_length=64, unique=True)
     description = models.CharField(max_length=256)
 
     def __str__(self):

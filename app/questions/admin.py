@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from .models import (
     Answer,
-    Label,
+    Tag,
     Question,
 )
 
@@ -12,6 +12,6 @@ class QuestionAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Label)
-class LabelAdmin(admin.ModelAdmin):
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
     pass

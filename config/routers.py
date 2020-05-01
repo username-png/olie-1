@@ -5,10 +5,12 @@ from django.urls import path
 from app.users.views import (
     UserViewSet,
 )
+from app.questions.views import TagViewSet
 
 
 v1_router = routers.DefaultRouter()
 v1_router.register('users', UserViewSet, basename='users')
+v1_router.register('tags', TagViewSet, basename='tags')
 
 v1_patterns = [
 ]
