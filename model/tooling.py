@@ -26,8 +26,7 @@ def predict(model, tokenizer, tags, text):
         i for i, accuracy in enumerate(pred[0])
         if accuracy > 0.2
     ]
-    return (
+    return zip(
         [tags[i] for i in tag_indexes],
-        tags,
         [pred[0][i] for i in tag_indexes],
     )
