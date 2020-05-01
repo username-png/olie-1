@@ -33,6 +33,6 @@ def clean(text):
 
 def generate_dataset(dataset_path):
     df = pd.read_csv(dataset_path)
-    df.drop(df[~df['Class'].isin(model_labels)].index, inplace=True)
+    df.drop(df[~df['Tag'].isin(model_labels)].index, inplace=True)
     df['Question'] = df['Question'].apply(clean)
     return df

@@ -3,3 +3,5 @@
 __pycache__
 tags
 .env
+model/data/model.h5
+model/data/model.json
