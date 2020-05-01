@@ -170,3 +170,6 @@ def load_model(force_retrain=False):
         tags_cache,
     )
     return model, tokenizer, tags
+
+
+model, tokenizer, tags = load_model()
