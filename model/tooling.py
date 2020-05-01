@@ -18,7 +18,7 @@ class ModelAttributes:
 model_attributes = ModelAttributes()
 
 
-def predict(model, tokenizer, text):
+def predict(model, tokenizer, tags, text):
     seq = tokenizer.texts_to_sequences([text])
     padded = pad_sequences(seq, maxlen=model_attributes.max_length)
     pred = model.predict(padded)
@@ -27,7 +27,7 @@ def predict(model, tokenizer, text):
         if accuracy > 0.2
     ]
     return (
-        [tags[i] for i in label_indexes],
+        [tags[i] for i in tag_indexes],
         tags,
-        [pred[0][i] for i in label_indexes],
+        [pred[0][i] for i in tag_indexes],
     )

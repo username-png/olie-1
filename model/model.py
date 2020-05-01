@@ -5,7 +5,10 @@ from pathlib import Path
 import pandas as pd
 import tensorflow as tf
 from tensorflow.keras.models import model_from_json
-from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.text import (
+    tokenizer_from_json,
+    Tokenizer,
+)
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
 
@@ -100,7 +103,7 @@ def load_from_cache(model_cache, model_weights, tokenizer_cache, tags_cache):
     model.load_weights(str(model_weights))
 
     with open(tokenizer_cache, 'r') as tokenizer_cache_f:
-        tokenizer = json.load(tokenizer_cache_f)
+        tokenizer = tokenizer_from_json(json.load(tokenizer_cache_f))
 
     with open(tags_cache, 'r') as tags_cache_f:
         tags = json.load(tags_cache_f)
@@ -120,13 +123,13 @@ def serialize_model(
         json.dump(tokenizer.to_json(), tokenizer_cache_f)
 
     with open(tags_cache, 'w') as tags_cache_f:
-        json.dump(tags, tags_cache_f)
+        json.dump(list(tags), tags_cache_f)
 
 
-def load_model():
+def load_model(force_retrain=False):
     model_cache_path = Path('model/data')
-    model_cache = model_cache_path / 'model.json' 
-    model_weights = model_cache_path / 'model.h5' 
+    model_cache = model_cache_path / 'model.json'
+    model_weights = model_cache_path / 'model.h5'
     tokenizer_cache = model_cache_path / 'tokenizer.json'
     tags_cache = model_cache_path / 'tags.json'
 
@@ -135,6 +138,7 @@ def load_model():
         and model_weights.is_file()
         and tokenizer_cache.is_file()
         and tags_cache.is_file()
+        and not force_retrain
     ):
         return load_from_cache(
             model_cache,
@@ -152,7 +156,17 @@ def load_model():
         tokenizer,
         tags,
     ) = get_train_data()
+
     model = get_model_structure(X, tags)
-    history = fit_model(model, X_train, Y_train)
-    serialize_model(model, tokenizer, tags, model_cache, model_weights)
+    fit_model(model, X_train, Y_train)
+
+    serialize_model(
+        model,
+        tokenizer,
+        tags,
+        model_cache,
+        model_weights,
+        tokenizer_cache,
+        tags_cache,
+    )
     return model, tokenizer, tags

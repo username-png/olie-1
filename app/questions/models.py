@@ -28,4 +28,4 @@ class Tag(models.Model):
     description = models.CharField(max_length=256)
 
     def __str__(self):
-        return f'{self.identifier}'
+        return f'{self.slug}'
