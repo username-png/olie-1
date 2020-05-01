@@ -1,3 +1,17 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import (
+    Answer,
+    Label,
+    Question,
+)
+
+
+@admin.register(Question)
+class QuestionAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Label)
+class LabelAdmin(admin.ModelAdmin):
+    pass

@@ -1,10 +1,15 @@
-FROM python:3.8.0-alpine3.10
+FROM python:3.8.2-slim-buster
 
-RUN apk add make automake gcc g++ python3-dev
-
-RUN apk add --no-cache postgresql-libs \
-    && apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev curl \
-    && apk add --no-cache
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        make \
+        automake \
+        gcc \
+        g++ \
+        curl \
+        libpq-dev \
+    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV APP_DIR=/var/www/app \
     PYTHONBUFFERED=1
@@ -13,7 +18,8 @@ WORKDIR ${APP_DIR}
 
 COPY requirements.txt ${APP_DIR}
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt \
+    && python -c "import nltk; nltk.download('stopwords')"
 
 COPY rootfs /
 COPY . ${APP_DIR}

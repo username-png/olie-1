@@ -13,7 +13,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
 
-    text = models.TextField() 
+    text = models.TextField()
     label = models.ForeignKey(
         'Label', blank=True, null=True, on_delete=models.SET_NULL)
     is_suggestion = models.BooleanField(default=False)
@@ -24,7 +24,7 @@ class Answer(models.Model):
 
 class Label(models.Model):
 
-    identifier = models.CharField(max_length=64)
+    identifier = models.CharField(max_length=64, unique=True)
     description = models.CharField(max_length=256)
 
     def __str__(self):
