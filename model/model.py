@@ -94,27 +94,53 @@ def get_model_structure(X, tags):
     return model
 
 
-def load_from_cache(model_cache, model_weights):
+def load_from_cache(model_cache, model_weights, tokenizer_cache, tags_cache):
     with open(model_cache, 'r') as model_f:
         model = model_from_json(json.load(model_f))
     model.load_weights(str(model_weights))
-    return model
+
+    with open(tokenizer_cache, 'r') as tokenizer_cache_f:
+        tokenizer = json.load(tokenizer_cache_f)
+
+    with open(tags_cache, 'r') as tags_cache_f:
+        tags = json.load(tags_cache_f)
+
+    return model, tokenizer, tags
 
 
-def serialize_model(model, model_cache, model_weights):
-    model_json = model.to_json()
+def serialize_model(
+    model, tokenizer, tags, model_cache, model_weights,
+    tokenizer_cache, tags_cache
+):
     with open(model_cache, 'w') as model_cache_f:
-        json.dump(model_json, model_cache_f)
+        json.dump(model.to_json(), model_cache_f)
     model.save_weights(str(model_weights))
+
+    with open(tokenizer_cache, 'w') as tokenizer_cache_f:
+        json.dump(tokenizer.to_json(), tokenizer_cache_f)
+
+    with open(tags_cache, 'w') as tags_cache_f:
+        json.dump(tags, tags_cache_f)
 
 
 def load_model():
     model_cache_path = Path('model/data')
     model_cache = model_cache_path / 'model.json' 
     model_weights = model_cache_path / 'model.h5' 
+    tokenizer_cache = model_cache_path / 'tokenizer.json'
+    tags_cache = model_cache_path / 'tags.json'
 
-    if model_cache.is_file() and model_weights.is_file():
-        return load_from_cache(model_cache, model_weights)
+    if (
+        model_cache.is_file()
+        and model_weights.is_file()
+        and tokenizer_cache.is_file()
+        and tags_cache.is_file()
+    ):
+        return load_from_cache(
+            model_cache,
+            model_weights,
+            tokenizer_cache,
+            tags_cache)
 
     (
         X,
@@ -128,21 +154,5 @@ def load_model():
     ) = get_train_data()
     model = get_model_structure(X, tags)
     history = fit_model(model, X_train, Y_train)
-    serialize_model(model, model_cache, model_weights)
-
-
-"""
-def predict(text):
-    seq = tokenizer.texts_to_sequences([text])
-    padded = pad_sequences(seq, maxlen=model_attributes.max_length)
-    pred = model.predict(padded)
-    tag_indexes = [
-        i for i, accuracy in enumerate(pred[0])
-        if accuracy > 0.2
-    ]
-    return (
-        [tags[i] for i in label_indexes],
-        tags,
-        [pred[0][i] for i in label_indexes],
-    )
-"""
+    serialize_model(model, tokenizer, tags, model_cache, model_weights)
+    return model, tokenizer, tags
