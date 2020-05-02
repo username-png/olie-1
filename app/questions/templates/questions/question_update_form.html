@@ -11,10 +11,13 @@
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" value="Classificar" style="width:200px; height:50px;" />
-        </form>
-        <br/><br/>
-        <form method="get">
+        </form><form method="get">
             <input type="submit" value="Me da outra!" style="width:200px; height:50px;" />
         </form>
+        <ul>
+        {% for tag in tags %}
+            <li>{{ tag.slug }} - {{ tag.question_count }}</li> 
+        {% endfor %}
+        </ul>
     </body>
 </html>

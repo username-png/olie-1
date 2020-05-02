@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.db import models
 from django.urls import reverse
 from django.views.generic.edit import UpdateView
 
@@ -44,4 +45,7 @@ class ClassificationView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['tags'] = Tag.objects.annotate(
+            question_count=models.Count('question')
+        ).order_by('-question_count')
         return context
