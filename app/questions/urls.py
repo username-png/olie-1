@@ -15,6 +15,6 @@ urlpatterns = [
     path(
         'predict/',
         PredictDemoView.as_view(),
-        name='questions_predict',
+        name='questions_prediction',
     ),
 ]
