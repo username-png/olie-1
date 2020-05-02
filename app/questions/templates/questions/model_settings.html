@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+<h1>LSTM Model Settings</h1>
 <p>Be careful.</p>
 <p>
     <h2>Model cache status</h2>
@@ -14,7 +15,7 @@
 <form method="post">
     {% csrf_token %}
     <input type="hidden" name="retrain" value="1" />
-    <input type="submit" value="Re-train LSTM model" style="width: 200px; height: 40px;">
+    <input type="submit" value="Re-train LSTM model">
 </form>
 {% if retrain %}
 <p><strong>RETRAINING MODEL.... HAND TIGHT</strong></p>

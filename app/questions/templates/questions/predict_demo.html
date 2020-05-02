@@ -1,9 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<h1>Prediction</h1>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
+    <p>Tags available for prediction:</p>
+    <ul>
+    {% for slug, name in tags %}
+        <li>{{ slug }} - {{ name }}</li>
+    {% endfor %}
+    </ul>
     <input type="submit" value="Predict" /><br/><br/>
 
     {% if prediction %}

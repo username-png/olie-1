@@ -84,6 +84,13 @@ class PredictDemoView(FormView):
             ),
         )
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tags'] = Tag.objects.annotate(
+            question_count=models.Count('question')
+        ).order_by('-question_count').values_list('slug', 'name')
+        return context
+
 
 class AnswerCreateView(CreateView):
     model = Answer

@@ -167,7 +167,7 @@ DRAMATIQ_TASKS_DATABASE = 'default'
 
 
 DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK': lambda request: DEBUG,
+    'SHOW_TOOLBAR_CALLBACK': lambda request: False,
 }
 
 
