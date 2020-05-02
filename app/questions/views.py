@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from django.db import models
 from django.urls import reverse
 from django.views.generic.edit import (
+    CreateView,
     FormView,
     UpdateView,
 )
@@ -21,6 +22,7 @@ from .forms import (
     PredictForm,
 )
 from .models import (
+    Answer,
     Question,
     Tag,
 )
@@ -64,9 +66,24 @@ class PredictDemoView(FormView):
     form_class = PredictForm
 
     def form_valid(self, form):
+        prediction = form.predict(form.data['question'])
+        answers = {}
+        for prediction_tag, accuracy in prediction:
+            answers[prediction_tag] = Answer.objects.filter(
+                tag__slug=prediction_tag)
+
         return self.render_to_response(
             self.get_context_data(
                 form=form,
-                prediction=form.predict(form.data['question'])
+                prediction=prediction,
+                answers=answers,
             ),
         )
+
+
+class AnswerCreateView(CreateView):
+    model = Answer
+    fields = ('text', 'tag',)
+
+    def get_success_url(self):
+        return reverse('questions_answer')

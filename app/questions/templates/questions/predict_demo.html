@@ -6,8 +6,18 @@
     {{ form.as_p }}
     <input type="submit" value="Predict" /><br/><br/>
 
-    Predicted to: {{ prediction }}<br/><br/>
-    Answers with this these tags:
-    ...
+    {% if prediction %}
+        Predicted to: {{ prediction }}<br/><br/>
+        {% for tag, answers in answers.items %}
+            <h3>{{ tag }}</h3>
+            <ul>
+                {% for answer in answers %}
+                <li>
+                    {{ answer.text }}
+                </li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    {% endif %}
 </form>
 {% endblock content %}
