@@ -136,6 +136,10 @@ form input[type="submit"]:hover {
   cursor: pointer;
 }
 
+form textarea {
+  width: 100%;
+}
+
 .radio-toolbar {
   margin-top: 10px;
   margin-bottom: 10px;
