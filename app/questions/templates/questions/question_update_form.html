@@ -1,18 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Classification</h1>
-<p>{{ not_classified }} questions still need to be classified<br/><br/></p>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Classify" />
-</form><form method="get">
-    <input type="submit" value="Randomize" />
-</form>
-<ul>
-{% for tag in tags %}
-    <li>{{ tag.slug }} - {{ tag.question_count }}</li> 
-{% endfor %}
-</ul>
+    <h1>Classification</h1>
+    <p>{{ not_classified }} questions still need to be classified<br/><br/></p>
+    {{ form.errors }}
+    <form method="post">
+        {% csrf_token %}
+        <textarea name="text" rows="4" cols="40">{{ form.text.value }}</textarea>
+            <div class="radio-toolbar">
+            {% for tag in form.tag.field.choices.queryset %}
+                <input type="radio" name="tag" id="tag{{ tag.id }}" value="{{ tag.id }}">
+                <label for="tag{{ tag.id }}">{{ tag.slug }}</label>
+            {% endfor %}
+            </div>
+            <input type="submit" value="Classify" />
+    </form>
+    <form method="get">
+        <input type="submit" value="Randomize" />
+    </form>
+    <ul>
+        {% for tag in tags %}
+            <li>{{ tag.slug }} - {{ tag.question_count }}</li> 
+        {% endfor %}
+    </ul>
 {% endblock content %}
