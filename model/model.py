@@ -72,7 +72,7 @@ def get_train_data():
 
 
 def fit_model(model, X_train, Y_train):
-    epochs = 10
+    epochs = 50
     batch_size = 64
     history = model.fit(
         X_train,
@@ -171,7 +171,11 @@ def load_model(force_retrain=False):
     ) = get_train_data()
 
     model = get_model_structure(X, tags)
-    fit_model(model, X_train, Y_train)
+    history = fit_model(model, X_train, Y_train)
+
+    from .visualization import plot_graphs
+    plot_graphs(history, 'accuracy')
+    plot_graphs(history, 'loss')
 
     serialize_model(
         model,
