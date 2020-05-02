@@ -10,4 +10,5 @@ class QuestionForm(forms.ModelForm):
         fields = ('text', 'tag',)
         widgets = {
             'tag': forms.RadioSelect(),
+            'text': forms.Textarea(attrs={'cols': 40, 'rows': 4}),
         }
