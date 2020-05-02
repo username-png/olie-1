@@ -25,6 +25,7 @@ class Answer(models.Model):
 class Tag(models.Model):
 
     slug = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=128, blank=True, default='')
     description = models.CharField(max_length=256)
 
     def __str__(self):
