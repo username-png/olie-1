@@ -1,9 +1,12 @@
+from pathlib import Path
+
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from django.db import models
 from django.urls import reverse
+from django.views.generic import TemplateView
 from django.views.generic.edit import (
     CreateView,
     FormView,
@@ -27,6 +30,7 @@ from .models import (
     Tag,
 )
 from .serializers import TagSerializer
+from .tasks import retrain_model
 
 
 class TagViewSet(viewsets.ModelViewSet):
@@ -87,3 +91,31 @@ class AnswerCreateView(CreateView):
 
     def get_success_url(self):
         return reverse('questions_answer')
+
+
+class ModelSettingsView(TemplateView):
+    template_name = 'questions/model_settings.html'
+
+    def post(self, request):
+        # ugly temporary state
+        self.retrain = bool(int(request.POST.get('retrain', 0)))
+        return super().get(request)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        model_cache_path = Path('model/data')
+        model_cache = model_cache_path / 'model.json'
+        model_weights_cache = model_cache_path / 'model.h5'
+        tokenizer_cache = model_cache_path / 'tokenizer.json'
+        tags_cache = model_cache_path / 'tags.json'
+
+        context['model_cache'] = model_cache.is_file()
+        context['model_weights_cache'] = model_weights_cache.is_file()
+        context['tokenizer_cache'] = tokenizer_cache.is_file()
+        context['tags_cache'] = tags_cache.is_file()
+
+        if hasattr(self, 'retrain') and self.retrain:
+            context['retrain'] = retrain_model.send()
+
+        return context

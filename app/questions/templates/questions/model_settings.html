@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+<p>Be careful.</p>
+<p>
+    <h2>Model cache status</h2>
+    <ul>
+        <li>Model cache: {% if model_cache %}&#10004;{% else %}&#10060;{% endif %}</li>
+        <li>Model weights cache: {% if model_weights_cache %}&#10004;{% else %}&#10060;{% endif %}</li>
+        <li>Model tokenizer cache: {% if tokenizer_cache %}&#10004;{% else %}&#10060;{% endif %}</li>
+        <li>Model tags cache: {% if tags_cache %}&#10004;{% else %}&#10060;{% endif %}</li>
+    </ul>
+</p>
+<br/>
+<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="retrain" value="1" />
+    <input type="submit" value="Re-train LSTM model" style="width: 200px; height: 40px;">
+</form>
+{% if retrain %}
+<p><strong>RETRAINING MODEL.... HAND TIGHT</strong></p>
+<p><i>{{ retrain }}</i></p>
+{% endif %}
+{% endblock content %}

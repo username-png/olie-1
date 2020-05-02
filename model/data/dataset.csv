@@ -54,7 +54,6 @@ Garantia appe?,garantia
 Nota fiscal em meu nome?,nf
 comprando agora envia amanha?,entrega
 "Os produtos estão no Brasil msm?  Pq meu CEP é 45900-000 e tá me cobrando 179.90 de frete , é um absurdo... Compro direto produtos aqui no Brasil pelo MercadoLivre e pago 30 a 50 reais sempre... Pq esse exagero no frete?",frete
-quais as medidas da caixa e peso?,medidas
 "Olá! Não teria como fazer um frete mais em conta? Quase 90,00 para o cep 20.950-004...",frete
 O frete é esse valor mesmo 3 mil reais ????,frete
 O frete pra 59856-000 fica quanto?,frete
@@ -77,7 +76,6 @@ Esse celular e lacrado na caixa ou já te vi algum uso?,condicao
 Quero comprar com cartao elo a vista como faço?,pagamento
 A promoção vai voltar quando? Voltando efetuarei a compra,oferta
 não tem provisão de promoção de novo? eu tava pronto pra comprar mas ai a promoção de 30% saiu,oferta
-De memória RAM tem quanto?,memoria
 "Volta o valor para $3150.00 que fecho 2 com vocês ,comprei com vocês um A51 dia 20/3 e um iPhone xr 128 29/3 se voltar o valor compro no ato 2 unidades.",oferta
 "Vai voltar o valor de $3150,00 ?  Se sim efetuarei a compra",oferta
 Volta no valor promocional do dia 29/2 que compro 2 unidades $3150.00,oferta
@@ -843,6 +841,7 @@ Gostaria de saber se faz por 2.400 com frete para Minas Gerais dividido em 4x?,f
 Tem outra cor tipo dourado ??,cor
 "Boa tarde.No anúncio o iPhone XR é Red,mas a foto é um iPhone na cor preta.Qual cor disponível?Vc tem pronta entrega?",cor
 Boa tarde amigo! Vc tem o iPhone na cor preta? Fazendo a compra hoje chega no dia 08/ 04?.  Grato,cor
+Assim q efetuar aviso !,agradecimento
 Boa tarde. Ainda disponível na cor prata? É original com todos os acessórios né?,cor
 Tem na cor Rose?,cor
 O produto é novo e original? Tem na cor vermelha?,cor
@@ -885,6 +884,7 @@ Você  teria o Iphone Plus 8 na cor Rose ( dourado)? Obrigado,cor
 "no caso, após a compra, o valor do celular vocês dividem em 12X, né isso ? e aí todo mês eu fico dando o valor.",pagamento
 "como faço pra ter mais contato com vocês, para poder efetuar a compra ?",contato
 Ola. Bom dia tem ele na cor vermelha,cor
+"Combinado Evandro , mil e duzentos a vista em dinheiro , certo ?",oferta
 Tem disponível na cor rose?,cor
 Aparelho e acessórios originais? Tem na cor cinza espacial?,cor
 "Queria efetuar minha compra, teria na cor Rose?",cor
@@ -1000,6 +1000,7 @@ Aceito... posso alterar o valor do anúncio?,pagamento
 consegue fazer um valor mais a baixo ? compro agora mesmo,pagamento
 Se eu pagar no dinheiro quantos dia leva pra confirmar o pagamento,pagamento
 E por conta do frete amigo eu moro no Piauí deixa por 250?o frete tá 44 reais,frete
+Você não faz por 1000 amigo avista,oferta
 tem a cor vermelho ?,cor
 Só tem da cor verde?,cor
 Ainda disponível? Posso fazer o pagamento por transferência?,pagamento
@@ -1354,6 +1355,7 @@ Tem na cor prata ou dourado?,cor
 Boa tarde vou efetuar o pagamento agora . Tem como me manda na cor prata,cor
 Vc poderia me chama no privado,contato
 Olá  tudo bem  tem na cor vermelha,cor
+Ta vou ver o q fasso aqui,agradecimento
 "***Quero comprar me chamaa carlaindustrial Ä Gmail. Cm  ***Me chama no email amigo carlaindustrial ªg °m ail com\   Cai fora dessa Carla Industrial, é golpe",contato
 Quero comprar me chamaa carlaindustrial Ä Gmail. Cm,contato
 Me chama no email amigo carlaindustrial ªg °m ail com\,contato
@@ -1804,6 +1806,7 @@ Que numero posso entrar em contato?,contato
 Boa noite contato,contato
 Contato ?,contato
 ola tem e-mail para contato?,contato
+Vc pode me enviar fotos mais amplas?,fotos
 Tem como deixar frete grátis?,frete
 Boa noite. Você ver chama Alexandre?,contato
 Aceita 300 e o frete por minha conta.,frete

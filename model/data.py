@@ -9,14 +9,6 @@ REPLACE_BY_SPACE_RE = re.compile('[/(){}\[\]\|@,;]')
 BAD_SYMBOLS_RE = re.compile('[^0-9a-z #+_]')
 STOPWORDS = set(stopwords.words('portuguese'))
 
-model_labels = set([
-    'cor',
-    'pagamento',
-    'contato',
-    'frete',
-    'entrega',
-    'condicao',
-])
 
 def clean(text):
     text = unidecode.unidecode(text)
@@ -33,6 +25,5 @@ def clean(text):
 
 def generate_dataset(dataset_path):
     df = pd.read_csv(dataset_path)
-    df.drop(df[~df['Tag'].isin(model_labels)].index, inplace=True)
     df['Question'] = df['Question'].apply(clean)
     return df

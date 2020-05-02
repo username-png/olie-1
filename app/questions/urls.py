@@ -3,6 +3,7 @@ from django.urls import path
 from .views import (
     AnswerCreateView,
     ClassificationView,
+    ModelSettingsView,
     PredictDemoView,
 )
 
@@ -22,5 +23,10 @@ urlpatterns = [
         'answer/',
         AnswerCreateView.as_view(),
         name='questions_answer',
+    ),
+    path(
+        'model/',
+        ModelSettingsView.as_view(),
+        name='questions_model',
     ),
 ]
