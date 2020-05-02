@@ -48,4 +48,6 @@ class ClassificationView(UpdateView):
         context['tags'] = Tag.objects.annotate(
             question_count=models.Count('question')
         ).order_by('-question_count')
+        context['not_classified'] = Question.objects.filter(
+            tag__isnull=True).count()
         return context
