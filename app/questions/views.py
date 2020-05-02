@@ -4,7 +4,10 @@ from rest_framework.views import APIView
 
 from django.db import models
 from django.urls import reverse
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import (
+    FormView,
+    UpdateView,
+)
 
 from model.model import (
     model,
@@ -13,7 +16,10 @@ from model.model import (
 )
 from model.tooling import predict
 
-from .forms import QuestionForm
+from .forms import (
+    QuestionForm,
+    PredictForm,
+)
 from .models import (
     Question,
     Tag,
@@ -51,3 +57,16 @@ class ClassificationView(UpdateView):
         context['not_classified'] = Question.objects.filter(
             tag__isnull=True).count()
         return context
+
+
+class PredictDemoView(FormView):
+    template_name = 'questions/predict_demo.html'
+    form_class = PredictForm
+
+    def form_valid(self, form):
+        return self.render_to_response(
+            self.get_context_data(
+                form=form,
+                prediction=form.predict(form.data['question'])
+            ),
+        )

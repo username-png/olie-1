@@ -1,5 +1,6 @@
 import csv
 import json
+from dataclasses import dataclass
 from pathlib import Path
 
 import pandas as pd
@@ -12,12 +13,24 @@ from tensorflow.keras.preprocessing.text import (
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
 
-from .data import generate_dataset
-from .tooling import (
-    model_attributes,
-)
-
 from app.questions.models import Question
+
+from .data import generate_dataset
+
+
+@dataclass
+class ModelAttributes:
+    vocab_size: int = 50000
+    embedding_dim: int = 100
+    max_length: int = 250
+    trunc_type: str = 'post'
+    padding_type: str = 'post'
+    oov_tok: str = '<OOV>'
+    training_portion: float = .8
+    filters: str = '!"#$%&()*+,-./:;<=>?@[\]^_`{|}~'
+
+
+model_attributes = ModelAttributes()
 
 
 def generate_csv():
@@ -39,7 +52,7 @@ def get_train_data():
 
     tokenizer = Tokenizer(
         num_words=model_attributes.vocab_size,
-        filters='!"#$%&()*+,-./:;<=>?@[\]^_`{|}~',
+        filters=model_attributes.filters,
         lower=True,
     )
     tokenizer.fit_on_texts(dataset['Question'].values)

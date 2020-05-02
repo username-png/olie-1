@@ -1,5 +1,7 @@
 from django import forms
 
+from model.tooling import predict
+
 from .models import Question
 
 
@@ -12,3 +14,10 @@ class QuestionForm(forms.ModelForm):
             'tag': forms.RadioSelect(),
             'text': forms.Textarea(attrs={'cols': 40, 'rows': 4}),
         }
+
+
+class PredictForm(forms.Form):
+    question = forms.CharField(widget=forms.Textarea())
+
+    def predict(self, text):
+        return list(predict(text))

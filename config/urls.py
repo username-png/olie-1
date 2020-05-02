@@ -11,12 +11,11 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import (
     include,
-    path,
     re_path,
+    path,
 )
 
 from app.misc.views import healthcheck
-from app.questions.views import ClassificationView
 
 from .routers import v1_urls
 
@@ -54,11 +53,7 @@ patterns = [
     path('healthcheck/', healthcheck, name='healthcheck'),
     path('admin/', admin.site.urls),
     path('api/v1/', include(v1_urls)),
-    path(
-        'questions/classification/',
-        ClassificationView.as_view(),
-        name='questions_classification',
-    ),
+    path('questions/', include('app.questions.urls')),
 ]
 
 urlpatterns = schema_patterns + jwt_patterns + patterns
