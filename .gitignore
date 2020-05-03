@@ -7,3 +7,5 @@ model/data/model.h5
 model/data/model.json
 model/data/tokenizer.json
 model/data/tags.json
+model/data/*.png
+*.tar
