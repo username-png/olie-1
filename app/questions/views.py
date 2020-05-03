@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from rest_framework import mixins
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -29,13 +30,26 @@ from .models import (
     Question,
     Tag,
 )
-from .serializers import TagSerializer
+from .serializers import (
+    TagSerializer,
+    TagListSerializer,
+)
 from .tasks import retrain_model
 
 
-class TagViewSet(viewsets.ModelViewSet):
+class TagViewSet(mixins.RetrieveModelMixin,
+                 mixins.ListModelMixin,
+                 viewsets.GenericViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
+    serializer_classes = {
+        'retrieve': TagSerializer,
+        'list': TagListSerializer,
+    }
+    lookup_field = 'slug'
+
+    def get_serializer_class(self):
+        return self.serializer_classes.get(self.action, self.serializer_class)
 
 
 class PredictView(APIView):
