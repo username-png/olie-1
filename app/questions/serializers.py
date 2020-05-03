@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from .models import (
+    Answer,
     Question,
     Tag,
 )
@@ -32,3 +33,12 @@ class TagSerializer(serializers.ModelSerializer):
         return [
             question.text for question in instance.question_set.all()[:3]
         ]
+
+
+class AnswerSerializer(serializers.ModelSerializer):
+
+    tag = serializers.CharField()
+
+    class Meta:
+        model = Answer
+        fields = ('id', 'text', 'tag',)

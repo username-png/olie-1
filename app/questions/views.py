@@ -31,6 +31,7 @@ from .models import (
     Tag,
 )
 from .serializers import (
+    AnswerSerializer,
     TagSerializer,
     TagListSerializer,
 )
@@ -50,6 +51,11 @@ class TagViewSet(mixins.RetrieveModelMixin,
 
     def get_serializer_class(self):
         return self.serializer_classes.get(self.action, self.serializer_class)
+
+
+class AnswerViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    queryset = Answer.objects.all()
+    serializer_class = AnswerSerializer
 
 
 class PredictView(APIView):

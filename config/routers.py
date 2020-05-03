@@ -6,6 +6,7 @@ from app.users.views import (
     UserViewSet,
 )
 from app.questions.views import (
+    AnswerViewSet,
     TagViewSet,
     PredictView,
 )
@@ -14,6 +15,7 @@ from app.questions.views import (
 v1_router = routers.DefaultRouter()
 v1_router.register('users', UserViewSet, basename='users')
 v1_router.register('tags', TagViewSet, basename='tags')
+v1_router.register('answers', AnswerViewSet, basename='answers')
 
 v1_patterns = [
     path('predict/', PredictView.as_view()),
