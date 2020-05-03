@@ -1,3 +1,5 @@
+from django.http import Http404
+
 from rest_framework import serializers
 
 from .models import (
@@ -42,3 +44,10 @@ class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
         fields = ('id', 'text', 'tag',)
+
+    def create(self, validated_data):
+        try:
+            tag = Tag.objects.get(slug=validated_data['tag'])
+        except Tag.DoesNotExist:
+            raise Http404
+        return Answer.objects.create(text=validated_data['text'], tag=tag)
