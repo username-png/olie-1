@@ -14,6 +14,7 @@ from django.urls import (
     re_path,
     path,
 )
+from django.views.generic import RedirectView
 
 from app.misc.views import healthcheck
 
@@ -54,6 +55,7 @@ patterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(v1_urls)),
     path('questions/', include('app.questions.urls')),
+    path('', RedirectView.as_view(url='/questions/classification/'), name='index'),
 ]
 
 urlpatterns = schema_patterns + jwt_patterns + patterns

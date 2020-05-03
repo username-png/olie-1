@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import RedirectView
 
 from .views import (
     AnswerCreateView,
@@ -29,4 +30,5 @@ urlpatterns = [
         ModelSettingsView.as_view(),
         name='questions_model',
     ),
+    path('', RedirectView.as_view(url='/classification/'), name='index'),
 ]
