@@ -4,6 +4,7 @@ from django.views.generic import RedirectView
 from .views import (
     AnswerCreateView,
     ClassificationView,
+    ClassificationDetailView,
     ModelSettingsView,
     PredictDemoView,
 )
@@ -12,7 +13,8 @@ from .views import (
 urlpatterns = [
     path(
         'classification/',
-        ClassificationView.as_view(),
+        # TODO: update back to `ClassificationView`
+        ClassificationDetailView.as_view(),
         name='questions_classification',
     ),
     path(

@@ -8,7 +8,10 @@ from rest_framework.views import APIView
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
-from django.views.generic import TemplateView
+from django.views.generic import (
+    DetailView,
+    TemplateView,
+)
 from django.views.generic.edit import (
     CreateView,
     UpdateView,
@@ -82,13 +85,17 @@ class ClassificationView(UpdateView):
     def get_success_url(self):
         return reverse('questions_classification')
 
+
+class ClassificationDetailView(DetailView):
+    template_name = 'questions/question_update_form.html'
+
+    def get_object(self, queryset=None):
+        return Question.objects.filter(tag__isnull=True).order_by('?').first()
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tags'] = Tag.objects.annotate(
-            question_count=models.Count('question')
-        ).order_by('-question_count')
-        context['not_classified'] = Question.objects.filter(
-            tag__isnull=True).count()
+        context['temporarily_disabled'] = True
+        context['tags'] = Tag.objects.all()
         return context
 
 
