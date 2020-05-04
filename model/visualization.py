@@ -14,6 +14,3 @@ def plot_graphs(history, string):
     if path.is_file():
         path.unlink()
     plt.savefig(str(path))
-
-
-# from model.model import load_model; load_model(force_retrain=True)

@@ -10,7 +10,6 @@ from django.urls import reverse
 from django.views.generic import TemplateView
 from django.views.generic.edit import (
     CreateView,
-    FormView,
     UpdateView,
 )
 
@@ -98,31 +97,8 @@ class ClassificationView(UpdateView):
         return context
 
 
-class PredictDemoView(FormView):
+class PredictDemoView(TemplateView):
     template_name = 'questions/predict_demo.html'
-    form_class = PredictForm
-
-    def form_valid(self, form):
-        prediction = form.predict(form.data['question'])
-        answers = {}
-        for prediction_tag, accuracy in prediction:
-            answers[prediction_tag] = Answer.objects.filter(
-                tag__slug=prediction_tag)
-
-        return self.render_to_response(
-            self.get_context_data(
-                form=form,
-                prediction=prediction,
-                answers=answers,
-            ),
-        )
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['tags'] = Tag.objects.annotate(
-            question_count=models.Count('question')
-        ).order_by('-question_count').values_list('slug', 'name')
-        return context
 
 
 class AnswerCreateView(CreateView):
