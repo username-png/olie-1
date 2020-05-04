@@ -1,24 +1,75 @@
 {% extends 'base.html' %}
 
-{% block content %}
-<h1>Prediction</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Predict" /><br/><br/>
+{% block h1 %}
+    Prediction
+{% endblock %}
 
-    {% if prediction %}
-        Predicted to: {{ prediction }}<br/><br/>
-        {% for tag, answers in answers.items %}
-            <h3>{{ tag }}</h3>
-            <ul>
-                {% for answer in answers %}
-                <li>
-                    {{ answer.text }}
-                </li>
-                {% endfor %}
-            </ul>
-        {% endfor %}
-    {% endif %}
-</form>
+{% block content %}
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+        <div class="px-4 py-5 sm:p-6">
+            <div class="mt-1 relative rounded-md shadow-sm">
+                <textarea id="question" rows="4" class="form-textarea py-3 px-4 block w-full transition ease-in-out duration-150" placeholder="Write your question here"></textarea>
+            </div>
+        </div>
+    </div>
+    <div id="prediction" class="hidden mt-2">
+        <div class="bg-white overflow-hidden shadow rounded-lg">
+            <div id="prediction-content" class="border-b border-gray-200 px-4 py-5 sm:px-6">
+                heh
+            </div>
+            <div id="prediction-status" class="px-4 py-5 sm:p-6 italic text-gray-500">
+                Waiting for you to finish typing...
+            </div>
+        </div>
+    </div>
+    <script>
+        var typing_timer;
+        var done_typing_interval = 1000;
+        let question_area = document.getElementById('question')
+        let prediction_container = document.getElementById('prediction')
+        let prediction_content = document.getElementById('prediction-content')
+        let prediction_status = document.getElementById('prediction-status')
+
+        question_area.addEventListener('keyup', () => {
+            clearTimeout(typing_timer);
+            typing_timer = setTimeout(done_typing, done_typing_interval);
+            update_contents()
+        });
+
+        question_area.addEventListener('keydown', function () {
+            clearTimeout(typing_timer);
+            update_contents()
+        });
+
+        function update_contents() {
+            prediction_status.innerHTML = 'Waiting for you to finish typing...'
+
+            if (prediction_container.classList.contains('hidden')) {
+                prediction_container.classList.remove('hidden')
+                prediction_container.classList.add('block')
+            }
+            if (question_area.value != "") {
+                prediction_content.innerHTML = 'Going to predict "' + question_area.value + '"...';
+            }
+            else {
+                prediction_container.classList.add('hidden')
+            }
+        }
+
+        function done_typing () {
+            prediction_status.innerHTML = 'Predicting...'
+            let request = new XMLHttpRequest()
+            let endpoint = '/api/v1/predict/?question=' + encodeURIComponent(question_area.value)
+            request.open('GET', endpoint)
+            request.send()
+            request.onload = () => {
+                if (request.status == 200) {
+                    prediction_status.innerHTML = 'Predicted'
+                    prediction_content.innerHTML = request.response
+                }
+            }
+        }
+
+
+    </script>
 {% endblock content %}
