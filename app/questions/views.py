@@ -62,7 +62,20 @@ class PredictView(APIView):
 
     def get(self, request, format=None):
         question = request.query_params.get('question', '')
-        return Response(predict(model, tokenizer, tags, question))
+
+        prediction = predict(question)
+        prediction_tag, prediction_accuracy = (
+            prediction[0] if prediction else (None, None))
+        prediction_answers = []
+        if prediction_tag:
+            prediction_answers = Answer.objects.filter(
+                tag__slug=prediction_tag).values_list('text', flat=True)
+
+        return Response({
+            'tag': prediction_tag,
+            'accuracy': prediction_accuracy,
+            'answers': prediction_answers,
+        })
 
 
 class ClassificationView(UpdateView):
