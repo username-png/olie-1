@@ -198,3 +198,5 @@ LOGGING = {
         },
     },
 }
+
+RETRAIN_PASSWORD = env.str('RETRAIN_PASSWORD', 'klapaucius')

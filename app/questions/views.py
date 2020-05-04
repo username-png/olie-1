@@ -5,6 +5,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.views.generic import TemplateView
@@ -13,16 +14,10 @@ from django.views.generic.edit import (
     UpdateView,
 )
 
-from model.model import (
-    model,
-    tokenizer,
-    tags,
-)
 from model.tooling import predict
 
 from .forms import (
     QuestionForm,
-    PredictForm,
 )
 from .models import (
     Answer,
@@ -115,6 +110,7 @@ class ModelSettingsView(TemplateView):
     def post(self, request):
         # ugly temporary state
         self.retrain = bool(int(request.POST.get('retrain', 0)))
+        self.retrain_password = str(request.POST.get('password', ''))
         return super().get(request)
 
     def get_context_data(self, **kwargs):
@@ -131,7 +127,7 @@ class ModelSettingsView(TemplateView):
         context['tokenizer_cache'] = tokenizer_cache.is_file()
         context['tags_cache'] = tags_cache.is_file()
 
-        if hasattr(self, 'retrain') and self.retrain:
+        if getattr(self, 'retrain', False) and self.retrain_password == settings.RETRAIN_PASSWORD:
             context['retrain'] = retrain_model.send()
 
         return context

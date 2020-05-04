@@ -1,7 +1,5 @@
 from django import forms
 
-from model.tooling import predict
-
 from .models import Question
 
 
