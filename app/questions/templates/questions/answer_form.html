@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
-{% block h1 %}
-    Answer creation
-{% endblock %}
+{% block header %}
+    {% include 'header.html' with header='Answer Creation' %}
+{% endblock header %}
 
 {% block content %}
     <div class="bg-white overflow-hidden shadow rounded-lg">

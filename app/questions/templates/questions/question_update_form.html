@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
-{% block h1 %}
-    Classification
-{% endblock h1 %}
+{% block header %}
+    {% include 'header.html' with header='Classification' %}
+{% endblock header %}
 
 {% block content %}
     <div class="bg-white overflow-hidden shadow rounded-lg">

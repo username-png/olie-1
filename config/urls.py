@@ -17,6 +17,7 @@ from django.urls import (
 from django.views.generic import RedirectView
 
 from app.misc.views import healthcheck
+from app.misc.views import LandingPageView
 
 from .routers import v1_urls
 
@@ -55,7 +56,7 @@ patterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(v1_urls)),
     path('questions/', include('app.questions.urls')),
-    path('', RedirectView.as_view(url='/questions/classification/'), name='index'),
+    path('', LandingPageView.as_view(), name='index'),
 ]
 
 urlpatterns = schema_patterns + jwt_patterns + patterns
