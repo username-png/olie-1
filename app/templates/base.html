@@ -24,16 +24,16 @@
                             </div>
                             <div class="hidden sm:ml-6 sm:flex">
                                 <a href="{% url 'questions_classification' %}" class="{% if '/classification/' in request.path %}border-indigo-500{% else %}border-transparent text-gray-500 focus:text-gray-700 hover:text-gray-700 focus:border-gray-300 hover:border-gray-300{% endif %} ml-8 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 focus:outline-none  transition duration-150 ease-in-out">
-                                    Classification
+                                    Classificação
                                 </a>
                                 <a href="{% url 'questions_prediction' %}" class="{% if '/predict/' in request.path %}border-indigo-500{% else %}border-transparent text-gray-500 focus:text-gray-700 hover:text-gray-700 focus:border-gray-300 hover:border-gray-300{% endif %} ml-8 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 focus:outline-none  transition duration-150 ease-in-out">
-                                    Prediction
+                                    Testar precisão
                                 </a>
                                 <a href="{% url 'questions_answer' %}" class="{% if '/answer/' in request.path %}border-indigo-500{% else %}border-transparent text-gray-500 focus:text-gray-700 hover:text-gray-700 focus:border-gray-300 hover:border-gray-300{% endif %} ml-8 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 focus:outline-none  transition duration-150 ease-in-out">
-                                    Answer
+                                    Respostas
                                 </a>
                                 <a href="{% url 'questions_model' %}" class="{% if '/model/' in request.path %}border-indigo-500{% else %}border-transparent text-gray-500 focus:text-gray-700 hover:text-gray-700 focus:border-gray-300 hover:border-gray-300{% endif %} ml-8 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 focus:outline-none  transition duration-150 ease-in-out">
-                                    LSTM Model Settings
+                                    Configurações do Modelo
                                 </a>
                             </div>
                         </div>
@@ -60,10 +60,10 @@
                 -->
                 <div id="mobile-menu" class="hidden sm:hidden">
                     <div class="pt-2 pb-3">
-                        <a href="{% url 'questions_classification' %}" class="block pl-3 pr-4 py-2 border-l-4 border-indigo-500 text-base font-medium text-indigo-700 bg-indigo-50 focus:outline-none focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700 transition duration-150 ease-in-out">Classification</a>
-                        <a href="{% url 'questions_prediction' %}" class="mt-1 block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">Prediction</a>
-                        <a href="{% url 'questions_answer' %}" class="mt-1 block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">Answer</a>
-                        <a href="{% url 'questions_model' %}" class="mt-1 block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">LSTM Model Settings</a>
+                        <a href="{% url 'questions_classification' %}" class="block pl-3 pr-4 py-2 border-l-4 border-indigo-500 text-base font-medium text-indigo-700 bg-indigo-50 focus:outline-none focus:text-indigo-800 focus:bg-indigo-100 focus:border-indigo-700 transition duration-150 ease-in-out">Classificação</a>
+                        <a href="{% url 'questions_prediction' %}" class="mt-1 block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">Testar precisão</a>
+                        <a href="{% url 'questions_answer' %}" class="mt-1 block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">Respostas</a>
+                        <a href="{% url 'questions_model' %}" class="mt-1 block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out">Configurações do Modelo</a>
                     </div>
                 </div>
             </nav>

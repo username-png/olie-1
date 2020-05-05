@@ -92,9 +92,11 @@ class ClassificationDetailView(DetailView):
     def get_object(self, queryset=None):
         return Question.objects.filter(tag__isnull=True).order_by('?').first()
 
+    def post(self, request):
+        return super().get(request)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['temporarily_disabled'] = True
         context['tags'] = Tag.objects.all()
         return context
 

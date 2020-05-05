@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-    {% include 'header.html' with header='Answer Creation' %}
+    {% include 'header.html' with header='Respostas' %}
 {% endblock header %}
 
 {% block content %}
@@ -10,7 +10,7 @@
             <form method="post">
                 {% csrf_token %}
                 <div class="mt-1 relative rounded-md shadow-sm">
-                    <textarea id="question" name="text" rows="4" class="form-textarea py-3 px-4 block w-full transition ease-in-out duration-150" placeholder="Write the answer to be tagged"></textarea>
+                    <textarea id="question" name="text" rows="4" class="form-textarea py-3 px-4 block w-full transition ease-in-out duration-150" placeholder="Escreva a resposta para ser adicionada a uma tag"></textarea>
                 </div>
                 <label for="tag" class="block text-sm font-medium leading-5 text-gray-700 mt-2">Tag</label>
                 <select id="tag" name="tag" class="mt-1 block form-select w-full py-2 px-3 py-0 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:shadow-outline-blue focus:border-blue-300 transition duration-150 ease-in-out sm:text-sm sm:leading-5">
@@ -22,7 +22,7 @@
                     <svg class="-ml-1 mr-3 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
                         <path fill="evenodd" d="M13.388,9.624h-3.011v-3.01c0-0.208-0.168-0.377-0.376-0.377S9.624,6.405,9.624,6.613v3.01H6.613c-0.208,0-0.376,0.168-0.376,0.376s0.168,0.376,0.376,0.376h3.011v3.01c0,0.208,0.168,0.378,0.376,0.378s0.376-0.17,0.376-0.378v-3.01h3.011c0.207,0,0.377-0.168,0.377-0.376S13.595,9.624,13.388,9.624z M10,1.344c-4.781,0-8.656,3.875-8.656,8.656c0,4.781,3.875,8.656,8.656,8.656c4.781,0,8.656-3.875,8.656-8.656C18.656,5.219,14.781,1.344,10,1.344z M10,17.903c-4.365,0-7.904-3.538-7.904-7.903S5.635,2.096,10,2.096S17.903,5.635,17.903,10S14.365,17.903,10,17.903z"></path>
                     </svg>
-                    Create answer
+                    Criar resposta
                 </button>
             </form>
         </div>

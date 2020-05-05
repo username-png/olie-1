@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block header %}
-    {% include 'header.html' with header='Classification' %}
+    {% include 'header.html' with header='Classificação' %}
 {% endblock header %}
 
 {% block content %}
     <div class="bg-white overflow-hidden shadow rounded-lg">
         <div class="px-4 py-5 sm:p-6">
             <label for="about" class="block text-sm font-medium leading-5 text-gray-700">
-                Question
+                Pergunta
             </label>
             <form method="post">
                 <div class="mt-1 rounded-md shadow-sm">
@@ -48,7 +48,7 @@
                             c0,0.361-0.293,0.654-0.654,0.654h-3.924c-0.361,0-0.654-0.292-0.654-0.654V2.962c0-0.361,0.293-0.654,0.654-0.654h3.924
                             c0.361,0,0.654,0.292,0.654,0.654V6.886z"></path>
                         </svg>
-                        Classify
+                        Classificar
                     </button>
                 </span>
                 <span class="inline-flex rounded-md shadow-sm ml-2">
@@ -64,31 +64,10 @@
                             C3.435,9.212,3.386,9.6,3.386,10c0,3.812,3.09,6.901,6.902,6.901c2.083,0,3.946-0.927,5.212-2.387l-0.898-0.719
                             C13.547,14.992,12.008,15.752,10.288,15.752z"></path>
                         </svg>
-                        Get another
+                        Próxima
                     </a>
                 </span>
             </form>
         </div>
     </div>
-    {% if temporarily_disabled %}
-        <div class="rounded-md bg-yellow-50 p-4 mt-4">
-            <div class="flex">
-                <div class="flex-shrink-0">
-                    <svg class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                    </svg>
-                </div>
-                <div class="ml-3">
-                    <h3 class="text-sm leading-5 font-medium text-yellow-800 font-bold">
-                        Temporarily disabled
-                    </h3>
-                    <div class="mt-2 text-sm leading-5 text-yellow-700">
-                        <p>
-                            This is temporarily disabled as we went public and these classifications directly impact on the results of our final model. There are currently no restrictions from whoever accesses this page, so classifications are disabled. <strong>Predictions are working normally as before</strong>.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% endif %}
 {% endblock content %}

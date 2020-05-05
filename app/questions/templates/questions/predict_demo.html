@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block header %}
-    {% include 'header.html' with header='Prediction' %}
+    {% include 'header.html' with header='Testar precisão' %}
 {% endblock header %}
 
 {% block content %}
     <div class="bg-white overflow-hidden shadow rounded-lg">
         <div class="px-4 py-5 sm:p-6">
             <div class="mt-1 relative rounded-md shadow-sm">
-                <textarea id="question" rows="4" class="form-textarea py-3 px-4 block w-full transition ease-in-out duration-150" placeholder="Write your question here"></textarea>
+                <textarea id="question" rows="4" class="form-textarea py-3 px-4 block w-full transition ease-in-out duration-150" placeholder="Escreva sua pergunta aqui"></textarea>
             </div>
         </div>
     </div>
@@ -17,7 +17,7 @@
             <div id="prediction-content" class="border-b border-gray-200 px-4 py-5 sm:px-6">
             </div>
             <div id="prediction-status" class="px-4 py-5 sm:p-6 italic text-gray-500">
-                Waiting for you to finish typing...
+                Esperando que termine de digitar...
             </div>
         </div>
     </div>
@@ -41,14 +41,14 @@
         });
 
         function update_contents() {
-            prediction_status.innerHTML = 'Waiting for you to finish typing...'
+            prediction_status.innerHTML = 'Esperando que termine de digitar...'
 
             if (prediction_container.classList.contains('hidden')) {
                 prediction_container.classList.remove('hidden')
                 prediction_container.classList.add('block')
             }
             if (question_area.value != "") {
-                prediction_content.innerHTML = 'Going to predict "' + question_area.value + '"...';
+                prediction_content.innerHTML = 'A Olie irá prever "' + question_area.value + '"...';
             }
             else {
                 prediction_container.classList.add('hidden')
@@ -56,14 +56,14 @@
         }
 
         function done_typing () {
-            prediction_status.innerHTML = 'Predicting...'
+            prediction_status.innerHTML = 'Prevendo...'
             let request = new XMLHttpRequest()
             let endpoint = '/api/v1/predict/?question=' + encodeURIComponent(question_area.value)
             request.open('GET', endpoint)
             request.send()
             request.onload = () => {
                 if (request.status == 200) {
-                    prediction_status.innerHTML = 'Predicted'
+                    prediction_status.innerHTML = 'Resultado da previsão'
                     prediction_content.innerHTML = request.response
                 }
             }
