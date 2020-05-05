@@ -26,15 +26,20 @@ class TagListSerializer(serializers.ModelSerializer):
 class TagSerializer(serializers.ModelSerializer):
 
     sample_questions = serializers.SerializerMethodField()
+    random_question = serializers.SerializerMethodField()
 
     class Meta:
         model = Tag
-        fields = ('id', 'slug', 'name', 'sample_questions')
+        fields = ('id', 'slug', 'name', 'sample_questions', 'random_question')
 
     def get_sample_questions(self, instance):
         return [
             question.text for question in instance.question_set.all()[:3]
         ]
+
+    def get_random_question(self, instance):
+        return Question.objects.filter(
+            tag=instance.id).order_by('?').first().text
 
 
 class AnswerSerializer(serializers.ModelSerializer):
